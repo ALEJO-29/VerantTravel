@@ -1,0 +1,58 @@
+<app-header></app-header>
+
+<main class="catalog-main-wrapper mobile-optimized">
+    <section class="page-header">
+        <div class="page-header-container">
+            <span class="page-header-label">Eje Cafetero, Colombia</span>
+            <h1>El Corazón del Café.</h1>
+            <p>Siente la magia de las montañas andinas. Desde valles de palmas gigantes hasta el aroma de los mejores granos de café del mundo.</p>
+        </div>
+    </section>
+
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-pills">
+                <button
+                    *ngFor="let cat of categories"
+                    class="filter-pill"
+                    [class.active]="activeCategory === cat"
+                    (click)="setCategory(cat)"
+                >{{ cat | titlecase }}</button>
+            </div>
+
+            <div class="filter-actions">
+                <div class="filter-select-wrapper">
+                    <span class="material-symbols-outlined">search</span>
+                    <input
+                        type="text"
+                        class="filter-search-input"
+                        placeholder="Buscar experiencia..."
+                        [(ngModel)]="searchText"
+                        (ngModelChange)="onSearchChange()"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="catalog-main">
+        <div class="catalog-grid" *ngIf="filteredExperiences.length > 0; else noResults">
+            <app-experience-card
+                *ngFor="let exp of filteredExperiences"
+                [experience]="exp"
+                [isFavorite]="isFavorite(exp.id)"
+                (favoriteToggled)="onFavoriteToggled($event)"
+            ></app-experience-card>
+        </div>
+        <ng-template #noResults>
+            <div class="no-results">
+                <span class="material-symbols-outlined">search_off</span>
+                <p>No se encontraron experiencias para tu búsqueda.</p>
+                <button class="filter-pill active" (click)="setCategory('todas')">Ver todas</button>
+            </div>
+        </ng-template>
+    </div>
+</main>
+
+<app-footer></app-footer>
+<app-bottom-nav></app-bottom-nav>
